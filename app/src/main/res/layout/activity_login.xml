@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:gravity="center" android:padding="32dp">
+    <TextView android:id="@+id/tvTitle" android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="Welcome Back" android:textSize="32sp" android:textColor="@color/claude_text" android:fontFamily="serif"/>
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="Login to backup your contacts" android:textColor="@color/claude_subtext"
+        android:layout_marginBottom="32dp" android:layout_marginTop="8dp"/>
+    <EditText android:id="@+id/etEmail" android:layout_width="match_parent" android:layout_height="56dp"
+        android:background="@drawable/bg_input" android:hint="Email Address" android:paddingStart="16dp"
+        android:inputType="textEmailAddress" android:layout_marginBottom="16dp"/>
+    <EditText android:id="@+id/etPassword" android:layout_width="match_parent" android:layout_height="56dp"
+        android:background="@drawable/bg_input" android:hint="Password" android:paddingStart="16dp"
+        android:inputType="textPassword" android:layout_marginBottom="24dp"/>
+    <Button android:id="@+id/btnLogin" android:layout_width="match_parent" android:layout_height="56dp"
+        android:text="Login" android:background="@drawable/bg_claude_button" android:textColor="#FFF" android:textAllCaps="false"/>
+    <TextView android:id="@+id/tvRegister" android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="Don't have an account? Register" android:textColor="@color/claude_accent"
+        android:layout_marginTop="24dp" android:padding="8dp"/>
+</LinearLayout>

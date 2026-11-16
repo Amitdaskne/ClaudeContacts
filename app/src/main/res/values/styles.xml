@@ -1,0 +1,10 @@
+<resources>
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/claude_accent</item>
+        <item name="colorPrimaryDark">@color/claude_bg</item>
+        <item name="android:windowBackground">@color/claude_bg</item>
+        <item name="android:textColorPrimary">@color/claude_text</item>
+        <item name="android:statusBarColor">@color/claude_bg</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+</resources>

@@ -1,0 +1,8 @@
+<resources>
+    <color name="claude_bg">#F9F9F6</color>
+    <color name="claude_text">#2D2D2D</color>
+    <color name="claude_accent">#D97757</color>
+    <color name="claude_card">#FFFFFF</color>
+    <color name="claude_subtext">#7A7A7A</color>
+    <color name="claude_border">#E5E5E5</color>
+</resources>
