@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+    android:layout_width="match_parent" android:layout_height="match_parent" 
+    android:orientation="vertical" android:paddingTop="24dp">
     
-    <androidx.appcompat.widget.Toolbar android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
-        android:background="@color/claude_bg" android:elevation="0dp" app:title="Contacts" app:titleTextColor="@color/claude_text"/>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:padding="16dp" android:gravity="center_vertical">
+        <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
+            android:text="Contacts" android:textSize="24sp" android:textStyle="bold" android:textColor="@color/claude_text" android:fontFamily="serif"/>
+        <Button android:id="@+id/btnLogout" android:layout_width="wrap_content" android:layout_height="40dp"
+            android:text="Logout" android:textAllCaps="false" android:textColor="@color/claude_accent"
+            android:background="?attr/selectableItemBackground"/>
+    </LinearLayout>
         
     <com.google.android.material.tabs.TabLayout android:id="@+id/tabLayout"
         android:layout_width="match_parent" android:layout_height="wrap_content"
@@ -14,7 +21,13 @@
     <androidx.viewpager2.widget.ViewPager2 android:id="@+id/viewPager"
         android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"/>
 
-    <Button android:id="@+id/btnSync" android:layout_width="match_parent" android:layout_height="56dp"
-        android:layout_margin="16dp" android:text="Sync Device to Cloud" android:textAllCaps="false"
-        android:background="@drawable/bg_claude_button" android:textColor="#FFF"/>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:padding="16dp">
+        <Button android:id="@+id/btnSync" android:layout_width="0dp" android:layout_weight="1" android:layout_height="56dp"
+            android:layout_marginEnd="8dp" android:text="Sync to Cloud" android:textAllCaps="false"
+            android:background="@drawable/bg_claude_button" android:textColor="#FFF"/>
+        <Button android:id="@+id/btnImport" android:layout_width="0dp" android:layout_weight="1" android:layout_height="56dp"
+            android:layout_marginStart="8dp" android:text="Import to Device" android:textAllCaps="false"
+            android:background="@drawable/bg_claude_button" android:textColor="#FFF"/>
+    </LinearLayout>
 </LinearLayout>

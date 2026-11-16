@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.WindowCompat;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,6 +20,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle b) {
         super.onCreate(b);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         setContentView(R.layout.activity_login);
 
         if (FirebaseApp.getApps(this).isEmpty()) {
