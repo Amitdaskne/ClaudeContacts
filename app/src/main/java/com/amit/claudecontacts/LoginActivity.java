@@ -1,9 +1,13 @@
 package com.amit.claudecontacts;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +20,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText etEmail, etPassword;
     private boolean isLogin = true;
     private FirebaseAuth mAuth;
+    private ProgressBar pb;
 
     @Override
     protected void onCreate(Bundle b) {
@@ -42,25 +47,44 @@ public class LoginActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.etPassword);
         Button btnLogin = findViewById(R.id.btnLogin);
         TextView tvRegister = findViewById(R.id.tvRegister);
+        pb = findViewById(R.id.progressBarLogin);
 
         btnLogin.setOnClickListener(v -> {
+            // Animation
+            v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).withEndAction(() -> 
+                v.animate().scaleX(1f).scaleY(1f).setDuration(100).start()).start();
+            
+            // Keyboard hide
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
             String email = etEmail.getText().toString().trim();
             String pass = etPassword.getText().toString().trim();
             if (email.isEmpty() || pass.isEmpty()) return;
+
+            btnLogin.setText("");
+            pb.setVisibility(View.VISIBLE);
+            btnLogin.setEnabled(false);
 
             if (isLogin) {
                 mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         startActivity(new Intent(this, ContactsActivity.class));
                         finish();
-                    } else Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show();
+                    } else {
+                        resetBtn(btnLogin);
+                        Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show();
+                    }
                 });
             } else {
                 mAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         startActivity(new Intent(this, ContactsActivity.class));
                         finish();
-                    } else Toast.makeText(this, "Registration Failed", Toast.LENGTH_SHORT).show();
+                    } else {
+                        resetBtn(btnLogin);
+                        Toast.makeText(this, "Registration Failed", Toast.LENGTH_SHORT).show();
+                    }
                 });
             }
         });
@@ -70,5 +94,11 @@ public class LoginActivity extends AppCompatActivity {
             btnLogin.setText(isLogin ? "Login" : "Register");
             tvRegister.setText(isLogin ? "Don't have an account? Register" : "Already have an account? Login");
         });
+    }
+
+    private void resetBtn(Button btn) {
+        pb.setVisibility(View.GONE);
+        btn.setEnabled(true);
+        btn.setText(isLogin ? "Login" : "Register");
     }
 }

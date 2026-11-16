@@ -4,10 +4,13 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -25,24 +28,30 @@ public class DeviceContactsFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_contacts, container, false);
         RecyclerView rv = v.findViewById(R.id.recyclerView);
         TextView tvEmpty = v.findViewById(R.id.tvEmpty);
+        ProgressBar pb = v.findViewById(R.id.progressBar);
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
+        pb.setVisibility(View.VISIBLE);
 
-        List<Map<String, String>> contacts = new ArrayList<>();
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-            Cursor cursor = getContext().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
-            if (cursor != null) {
-                while (cursor.moveToNext()) {
-                    Map<String, String> map = new HashMap<>();
-                    map.put("name", cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)));
-                    map.put("number", cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER)));
-                    contacts.add(map);
+        new Thread(() -> {
+            List<Map<String, String>> contacts = new ArrayList<>();
+            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+                Cursor cursor = getContext().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
+                if (cursor != null) {
+                    while (cursor.moveToNext()) {
+                        Map<String, String> map = new HashMap<>();
+                        map.put("name", cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)));
+                        map.put("number", cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER)));
+                        contacts.add(map);
+                    }
+                    cursor.close();
                 }
-                cursor.close();
             }
-        }
-
-        if (contacts.isEmpty()) tvEmpty.setVisibility(View.VISIBLE);
-        else rv.setAdapter(new ContactAdapter(contacts));
+            new Handler(Looper.getMainLooper()).post(() -> {
+                pb.setVisibility(View.GONE);
+                if (contacts.isEmpty()) tvEmpty.setVisibility(View.VISIBLE);
+                else rv.setAdapter(new ContactAdapter(contacts, false, null));
+            });
+        }).start();
         return v;
     }
 }
